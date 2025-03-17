@@ -12,7 +12,7 @@ public class SaleService {
     // Add a new Sale (Handles Stock Validation)
     public static void addSale(int productId, int quantity) {
         String stockCheckSQL = "SELECT stock, price FROM Products WHERE id = ?";
-        String insertSaleSQL = "INSERT INTO Sales (productId, quantity, totalAmount, saleTime) VALUES (?, ?, ?, ?)";
+        String insertSaleSQL = "INSERT INTO viewTables();Sales (productId, quantity, totalAmount, saleTime) VALUES (?, ?, ?, ?)";
         String updateStockSQL = "UPDATE Products SET stock = stock - ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.connect();

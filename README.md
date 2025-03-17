@@ -25,3 +25,31 @@ java -cp "bin:lib/sqlite-jdbc.jar" database.DatabaseConnection
 
 ## compile parent file first to use its package
 javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
+
+
+
+## access db -
+cd /path/to/your/project
+Desktop/IT-Service-Shop
+
+Start the SQLite shell:
+sqlite3 kingcom.db
+
+View the tables:
+.tables
+
+View table structure:
+.schema Products
+
+Query data:
+SELECT * FROM Products;
+SELECT * FROM Sales;
+
+
+.schema Repairs
+PRAGMA table_info(Repairs);
+remove db -rm /home/ayush/Desktop/IT-Service-Shop/kingcom.db
+
+## Run tests 
+javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
+java -cp "bin:lib/sqlite-jdbc.jar" tests.RepairServiceTest
