@@ -1,0 +1,27 @@
+
+## access db -
+cd /path/to/your/project
+Desktop/IT-Service-Shop
+
+Start the SQLite shell:
+sqlite3 kingcom.db
+
+View the tables:
+.tables
+
+View table structure:
+.schema Products
+
+Query data:
+SELECT * FROM Products;
+SELECT * FROM Sales;
+
+
+.schema Repairs
+PRAGMA table_info(Repairs);
+remove db -rm /home/ayush/Desktop/IT-Service-Shop/kingcom.db
+
+ALTER TABLE Products RENAME TO products;
+ALTER TABLE Repairs RENAME TO repairs;
+ALTER TABLE Sales RENAME TO sales;
+ALTER TABLE Recharges RENAME TO recharges;
