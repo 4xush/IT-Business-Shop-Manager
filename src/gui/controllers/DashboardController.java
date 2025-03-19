@@ -10,11 +10,16 @@ import java.io.IOException;
 
 public class DashboardController {
 
+    // AnchorPane to anchor the method to the FXML (optional, if you need a reference point)
+    @FXML
+    private AnchorPane dashboardPane;
+
     public void loadScene(String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/views/" + fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + fxmlFile));
             Parent root = loader.load();
-            Stage stage = (Stage) root.getScene().getWindow();
+            // Use the current stage from the dashboardPane or another node
+            Stage stage = (Stage) dashboardPane.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(true); // Fullscreen mode
