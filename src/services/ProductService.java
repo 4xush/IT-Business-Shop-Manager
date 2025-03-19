@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService {
-    
+
     // Add Product
-    public static void addProduct(String name, String category, double price, int stock) {
+    public static boolean addProduct(String name, String category, double price, int stock) {
         String sql = "INSERT INTO Products (name, category, price, stock) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -19,11 +19,18 @@ public class ProductService {
             stmt.setString(2, category);
             stmt.setDouble(3, price);
             stmt.setInt(4, stock);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
             
-            System.out.println("Product added successfully!");
+            if (rowsAffected > 0) {
+                System.out.println("Product added successfully!");
+                return true;
+            } else {
+                System.out.println("Error: No rows affected while adding product!");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Error adding product: " + e.getMessage());
+            return false;
         }
     }
 
@@ -51,8 +58,35 @@ public class ProductService {
         return products;
     }
 
+    // Get Product by ID
+    public static Product getProductById(int id) {
+        String sql = "SELECT * FROM Products WHERE id = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("category"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock")
+                );
+            } else {
+                System.out.println("Error: Product with ID " + id + " not found!");
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching product by ID: " + e.getMessage());
+            return null;
+        }
+    }
+
     // Update Product
-    public static void updateProduct(int id, String name, String category, double price, int stock) {
+    public static boolean updateProduct(int id, String name, String category, double price, int stock) {
         String sql = "UPDATE Products SET name = ?, category = ?, price = ?, stock = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -62,25 +96,40 @@ public class ProductService {
             stmt.setDouble(3, price);
             stmt.setInt(4, stock);
             stmt.setInt(5, id);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
             
-            System.out.println("Product updated successfully!");
+            if (rowsAffected > 0) {
+                System.out.println("Product updated successfully!");
+                return true;
+            } else {
+                System.out.println("Error: Product with ID " + id + " not found!");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Error updating product: " + e.getMessage());
+            return false;
         }
     }
 
     // Delete Product
-    public static void deleteProduct(int id) {
+    public static boolean deleteProduct(int id) {
         String sql = "DELETE FROM Products WHERE id = ?";
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
-            stmt.executeUpdate();
-            System.out.println("Product deleted successfully!");
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Product deleted successfully!");
+                return true;
+            } else {
+                System.out.println("Error: Product with ID " + id + " not found!");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Error deleting product: " + e.getMessage());
+            return false;
         }
     }
 }

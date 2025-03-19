@@ -26,14 +26,23 @@ public class DatabaseConnection {
                 "price REAL NOT NULL," +
                 "stock INTEGER NOT NULL," +
                 "date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-
+    
+        String saleGroupsTable = "CREATE TABLE IF NOT EXISTS SaleGroups (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "saleTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                "status TEXT DEFAULT 'Pending');";
+    
         String salesTable = "CREATE TABLE IF NOT EXISTS Sales (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "product_name TEXT NOT NULL," +
+                "saleGroupId INTEGER NOT NULL," +
+                "productId INTEGER NOT NULL," +
                 "quantity INTEGER NOT NULL," +
-                "price REAL NOT NULL," +
-                "sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-
+                "totalAmount REAL NOT NULL," +
+                "saleTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                "status TEXT DEFAULT 'Pending'," +
+                "FOREIGN KEY (saleGroupId) REFERENCES SaleGroups(id)," +
+                "FOREIGN KEY (productId) REFERENCES Products(id));";
+    
         String repairsTable = "CREATE TABLE IF NOT EXISTS Repairs (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "customerName TEXT NOT NULL, " +
@@ -43,17 +52,18 @@ public class DatabaseConnection {
                 "estimatedCost REAL NOT NULL, " +
                 "status TEXT DEFAULT 'Pending', " +
                 "createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-
+    
         try (Connection conn = connect();
-                PreparedStatement stmt1 = conn.prepareStatement(productsTable);
-                PreparedStatement stmt2 = conn.prepareStatement(salesTable);
-                PreparedStatement stmt3 = conn.prepareStatement(repairsTable)) {
+             PreparedStatement stmt1 = conn.prepareStatement(productsTable);
+             PreparedStatement stmt2 = conn.prepareStatement(saleGroupsTable);
+             PreparedStatement stmt3 = conn.prepareStatement(salesTable);
+             PreparedStatement stmt4 = conn.prepareStatement(repairsTable)) {
             stmt1.execute();
             stmt2.execute();
             stmt3.execute();
+            stmt4.execute();
             System.out.println("Tables Created Successfully");
-            System.out.println(
-                    "Using database file: " + new java.io.File(URL.replace("jdbc:sqlite:", "")).getAbsolutePath());
+            System.out.println("Using database file: " + new java.io.File(URL.replace("jdbc:sqlite:", "")).getAbsolutePath());
         } catch (SQLException e) {
             System.out.println("Error Creating Tables: " + e.getMessage());
         }
@@ -68,39 +78,6 @@ public class DatabaseConnection {
                 PreparedStatement stmtProducts = conn.prepareStatement(queryProducts);
                 PreparedStatement stmtSales = conn.prepareStatement(querySales);
                 PreparedStatement stmtRepairs = conn.prepareStatement(queryRepairs)) {
-
-            // View Products table
-            System.out.println("Products Table:");
-            try (var rs = stmtProducts.executeQuery()) {
-                while (rs.next()) {
-                    System.out.printf("ID: %d, Name: %s, Category: %s, Price: %.2f, Stock: %d, Date: %s%n",
-                            rs.getInt("id"), rs.getString("name"), rs.getString("category"),
-                            rs.getDouble("price"), rs.getInt("stock"), rs.getString("date_added"));
-                }
-            }
-
-            // View Sales table
-            System.out.println("\nSales Table:");
-            try (var rs = stmtSales.executeQuery()) {
-                while (rs.next()) {
-                    System.out.printf("ID: %d, Product: %s, Quantity: %d, Price: %.2f, Date: %s%n",
-                            rs.getInt("id"), rs.getString("product_name"), rs.getInt("quantity"),
-                            rs.getDouble("price"), rs.getString("sale_date"));
-                }
-            }
-
-            // View Repairs table
-            System.out.println("\nRepairs Table:");
-            try (var rs = stmtRepairs.executeQuery()) {
-                while (rs.next()) {
-                    System.out.printf(
-                            "ID: %d, Customer: %s, Phone: %s, Device: %s, Issue: %s, Cost: %.2f, Status: %s, Date: %s%n",
-                            rs.getInt("id"), rs.getString("customerName"), rs.getString("phoneNumber"),
-                            rs.getString("deviceModel"), rs.getString("issueDescription"),
-                            rs.getDouble("estimatedCost"), rs.getString("status"), rs.getString("createdAt"));
-                }
-            }
-
         } catch (SQLException e) {
             System.out.println("Error Viewing Tables: " + e.getMessage());
         }

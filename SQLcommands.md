@@ -19,7 +19,13 @@ SELECT * FROM Sales;
 
 .schema Repairs
 PRAGMA table_info(Repairs);
+
+## remove db
 remove db -rm /home/ayush/Desktop/IT-Service-Shop/kingcom.db
+
+
+## drop particular schema
+DROP TABLE IF EXISTS sales;
 
 ALTER TABLE Products RENAME TO products;
 ALTER TABLE Repairs RENAME TO repairs;

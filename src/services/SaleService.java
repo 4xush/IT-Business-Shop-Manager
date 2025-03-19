@@ -9,10 +9,26 @@ import java.util.List;
 
 public class SaleService {
 
-    // Add a new Sale (Handles Stock Validation)
-    public static void addSale(int productId, int quantity) {
+    public static int createSaleGroup() {
+        String sql = "INSERT INTO SaleGroups (saleTime, status) VALUES (?, 'Pending')";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1); // Return the new saleGroupId
+            }
+            return -1;
+        } catch (SQLException e) {
+            System.out.println("Error creating sale group: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    public static boolean addSaleItem(int saleGroupId, int productId, int quantity) {
         String stockCheckSQL = "SELECT stock, price FROM Products WHERE id = ?";
-        String insertSaleSQL = "INSERT INTO viewTables();Sales (productId, quantity, totalAmount, saleTime) VALUES (?, ?, ?, ?)";
+        String insertSaleSQL = "INSERT INTO Sales (saleGroupId, productId, quantity, totalAmount, saleTime, status) VALUES (?, ?, ?, ?, ?, 'Pending')";
         String updateStockSQL = "UPDATE Products SET stock = stock - ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.connect();
@@ -20,12 +36,11 @@ public class SaleService {
              PreparedStatement insertSaleStmt = conn.prepareStatement(insertSaleSQL);
              PreparedStatement updateStockStmt = conn.prepareStatement(updateStockSQL)) {
 
-            // Check stock availability
             stockCheckStmt.setInt(1, productId);
             ResultSet rs = stockCheckStmt.executeQuery();
             if (!rs.next()) {
                 System.out.println("Error: Product not found!");
-                return;
+                return false;
             }
 
             int availableStock = rs.getInt("stock");
@@ -33,35 +48,35 @@ public class SaleService {
 
             if (availableStock < quantity) {
                 System.out.println("Error: Not enough stock available!");
-                return;
+                return false;
             }
 
             double totalAmount = quantity * price;
             Timestamp saleTime = new Timestamp(System.currentTimeMillis());
 
-            // Insert Sale
-            insertSaleStmt.setInt(1, productId);
-            insertSaleStmt.setInt(2, quantity);
-            insertSaleStmt.setDouble(3, totalAmount);
-            insertSaleStmt.setTimestamp(4, saleTime);
+            insertSaleStmt.setInt(1, saleGroupId);
+            insertSaleStmt.setInt(2, productId);
+            insertSaleStmt.setInt(3, quantity);
+            insertSaleStmt.setDouble(4, totalAmount);
+            insertSaleStmt.setTimestamp(5, saleTime);
             insertSaleStmt.executeUpdate();
 
-            // Update Product Stock
             updateStockStmt.setInt(1, quantity);
             updateStockStmt.setInt(2, productId);
             updateStockStmt.executeUpdate();
 
-            System.out.println("Sale recorded successfully!");
+            System.out.println("Sale item added successfully!");
+            return true;
 
         } catch (SQLException e) {
-            System.out.println("Error processing sale: " + e.getMessage());
+            System.out.println("Error adding sale item: " + e.getMessage());
+            return false;
         }
     }
 
-    // Get All Sales
     public static List<Sale> getAllSales() {
         List<Sale> sales = new ArrayList<>();
-        String sql = "SELECT * FROM Sales";
+        String sql = "SELECT * FROM Sales WHERE saleGroupId IS NOT NULL"; // Exclude initial group row
 
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -70,10 +85,12 @@ public class SaleService {
             while (rs.next()) {
                 sales.add(new Sale(
                         rs.getInt("id"),
+                        rs.getInt("saleGroupId"),
                         rs.getInt("productId"),
                         rs.getInt("quantity"),
                         rs.getDouble("totalAmount"),
-                        rs.getTimestamp("saleTime")
+                        rs.getTimestamp("saleTime"),
+                        rs.getString("status")
                 ));
             }
         } catch (SQLException e) {
@@ -82,9 +99,8 @@ public class SaleService {
         return sales;
     }
 
-    // Update Sale (Edge Case: Cannot reduce quantity below previous stock levels)
-    public static void updateSale(int saleId, int newQuantity) {
-        String getSaleSQL = "SELECT productId, quantity FROM Sales WHERE id = ?";
+    public static boolean updateSaleItem(int saleId, int newQuantity) {
+        String getSaleSQL = "SELECT saleGroupId, productId, quantity, status FROM Sales WHERE id = ?";
         String updateSaleSQL = "UPDATE Sales SET quantity = ?, totalAmount = ? WHERE id = ?";
         String updateStockSQL = "UPDATE Products SET stock = stock + ? WHERE id = ?";
 
@@ -93,42 +109,43 @@ public class SaleService {
              PreparedStatement updateSaleStmt = conn.prepareStatement(updateSaleSQL);
              PreparedStatement updateStockStmt = conn.prepareStatement(updateStockSQL)) {
 
-            // Fetch Sale Data
             getSaleStmt.setInt(1, saleId);
             ResultSet rs = getSaleStmt.executeQuery();
             if (!rs.next()) {
-                System.out.println("Error: Sale not found!");
-                return;
+                System.out.println("Error: Sale item not found!");
+                return false;
+            }
+
+            if ("Confirmed".equals(rs.getString("status"))) {
+                System.out.println("Error: Cannot update a confirmed sale!");
+                return false;
             }
 
             int productId = rs.getInt("productId");
             int oldQuantity = rs.getInt("quantity");
-
-            // Stock Adjustment (Add back old quantity, subtract new quantity)
             int quantityDifference = oldQuantity - newQuantity;
 
-            // Update Stock
             updateStockStmt.setInt(1, quantityDifference);
             updateStockStmt.setInt(2, productId);
             updateStockStmt.executeUpdate();
 
-            // Update Sale
             double newTotalAmount = newQuantity * getProductPrice(productId);
             updateSaleStmt.setInt(1, newQuantity);
             updateSaleStmt.setDouble(2, newTotalAmount);
             updateSaleStmt.setInt(3, saleId);
             updateSaleStmt.executeUpdate();
 
-            System.out.println("Sale updated successfully!");
+            System.out.println("Sale item updated successfully!");
+            return true;
 
         } catch (SQLException e) {
-            System.out.println("Error updating sale: " + e.getMessage());
+            System.out.println("Error updating sale item: " + e.getMessage());
+            return false;
         }
     }
 
-    // Delete Sale (Handles Stock Reversal)
-    public static void deleteSale(int saleId) {
-        String getSaleSQL = "SELECT productId, quantity FROM Sales WHERE id = ?";
+    public static boolean deleteSaleItem(int saleId) {
+        String getSaleSQL = "SELECT saleGroupId, productId, quantity, status FROM Sales WHERE id = ?";
         String deleteSaleSQL = "DELETE FROM Sales WHERE id = ?";
         String updateStockSQL = "UPDATE Products SET stock = stock + ? WHERE id = ?";
 
@@ -137,34 +154,56 @@ public class SaleService {
              PreparedStatement deleteSaleStmt = conn.prepareStatement(deleteSaleSQL);
              PreparedStatement updateStockStmt = conn.prepareStatement(updateStockSQL)) {
 
-            // Fetch Sale Data
             getSaleStmt.setInt(1, saleId);
             ResultSet rs = getSaleStmt.executeQuery();
             if (!rs.next()) {
-                System.out.println("Error: Sale not found!");
-                return;
+                System.out.println("Error: Sale item not found!");
+                return false;
+            }
+
+            if ("Confirmed".equals(rs.getString("status"))) {
+                System.out.println("Error: Cannot delete a confirmed sale item!");
+                return false;
             }
 
             int productId = rs.getInt("productId");
             int quantity = rs.getInt("quantity");
 
-            // Delete Sale
             deleteSaleStmt.setInt(1, saleId);
             deleteSaleStmt.executeUpdate();
 
-            // Revert Stock
             updateStockStmt.setInt(1, quantity);
             updateStockStmt.setInt(2, productId);
             updateStockStmt.executeUpdate();
 
-            System.out.println("Sale deleted successfully!");
+            System.out.println("Sale item deleted successfully!");
+            return true;
 
         } catch (SQLException e) {
-            System.out.println("Error deleting sale: " + e.getMessage());
+            System.out.println("Error deleting sale item: " + e.getMessage());
+            return false;
         }
     }
 
-    // Helper Function: Get Product Price
+    public static boolean confirmSaleGroup(int saleGroupId) {
+        String sql = "UPDATE Sales SET status = 'Confirmed' WHERE saleGroupId = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, saleGroupId);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Sale group confirmed successfully!");
+                return true;
+            } else {
+                System.out.println("Error: Sale group not found!");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error confirming sale group: " + e.getMessage());
+            return false;
+        }
+    }
+
     private static double getProductPrice(int productId) throws SQLException {
         String sql = "SELECT price FROM Products WHERE id = ?";
         try (Connection conn = DatabaseConnection.connect();
