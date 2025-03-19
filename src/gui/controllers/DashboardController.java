@@ -1,38 +1,60 @@
 package gui.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import java.io.IOException;
 
 public class DashboardController {
 
-    @FXML private Button productButton;
-    @FXML private Button saleButton;
-    @FXML private Button repairButton;
-    @FXML private Button rechargeButton;
-    @FXML private Button reportButton;
+    public void loadScene(String fxmlFile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/views/" + fxmlFile));
+            Parent root = loader.load();
+            Stage stage = (Stage) root.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setMaximized(true); // Fullscreen mode
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void openProductView() {
-        System.out.println("Opening Product Management View...");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ProductView.fxml"));
+            AnchorPane root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Product Management");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void openSaleView() {
-        System.out.println("Opening Sales Management View...");
+        loadScene("SaleView.fxml");
     }
 
     @FXML
     private void openRepairView() {
-        System.out.println("Opening Repair Management View...");
+        loadScene("RepairView.fxml");
     }
 
     @FXML
     private void openRechargeView() {
-        System.out.println("Opening Recharge Management View...");
+        loadScene("RechargeView.fxml");
     }
 
     @FXML
     private void openReportView() {
-        System.out.println("Opening Reports View...");
+        loadScene("ReportView.fxml");
     }
 }

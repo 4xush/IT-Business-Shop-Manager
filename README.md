@@ -17,6 +17,10 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
 
+## Database and JavaFX-
+sqlite -jdbc 3.49.1.0 jar
+openjfx-23.0.2_linux-x64
+
 
 ## compile root dir - 
 javac -d bin -cp "lib/sqlite-jdbc.jar" src/database/DatabaseConnection.java
@@ -25,8 +29,6 @@ java -cp "bin:lib/sqlite-jdbc.jar" database.DatabaseConnection
 
 ## compile parent file first to use its package
 javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
-
-
 
 ## Run tests 
 javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
