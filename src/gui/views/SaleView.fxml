@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.controllers.SaleController" prefWidth="900" prefHeight="600">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.controllers.SaleController" prefWidth="1000" prefHeight="600">
     <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
         <Label text="Sale Management" style="-fx-font-size: 24px;" alignment="CENTER"/>
         <TableView fx:id="saleTable" VBox.vgrow="ALWAYS">
@@ -10,6 +10,7 @@
                 <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
                 <TableColumn fx:id="colSaleGroupId" text="Sale Group ID" prefWidth="100"/>
                 <TableColumn fx:id="colProductId" text="Product ID" prefWidth="100"/>
+                <TableColumn fx:id="colProductName" text="Product Name" prefWidth="200"/> <!-- Added -->
                 <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100"/>
                 <TableColumn fx:id="colTotalAmount" text="Total Amount" prefWidth="150"/>
                 <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>

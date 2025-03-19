@@ -4,17 +4,19 @@ import java.sql.Timestamp;
 
 public class Sale {
     private int id;
-    private int saleGroupId; // Groups products into one sale
+    private int saleGroupId;
     private int productId;
+    private String productName; // Added for display
     private int quantity;
-    private double totalAmount; // Amount for this product (quantity * price)
+    private double totalAmount;
     private Timestamp saleTime;
-    private String status; // Pending, Confirmed
+    private String status;
 
-    public Sale(int id, int saleGroupId, int productId, int quantity, double totalAmount, Timestamp saleTime, String status) {
+    public Sale(int id, int saleGroupId, int productId, String productName, int quantity, double totalAmount, Timestamp saleTime, String status) {
         this.id = id;
         this.saleGroupId = saleGroupId;
         this.productId = productId;
+        this.productName = productName;
         this.quantity = quantity;
         this.totalAmount = totalAmount;
         this.saleTime = saleTime;
@@ -25,6 +27,7 @@ public class Sale {
     public Sale(int saleGroupId, int productId, int quantity) {
         this.saleGroupId = saleGroupId;
         this.productId = productId;
+        this.productName = null; // Will be set when retrieved
         this.quantity = quantity;
         this.totalAmount = 0; // Calculated later
         this.saleTime = new Timestamp(System.currentTimeMillis());
@@ -40,6 +43,9 @@ public class Sale {
 
     public int getProductId() { return productId; }
     public void setProductId(int productId) { this.productId = productId; }
+
+    public String getProductName() { return productName; }
+    public void setProductName(String productName) { this.productName = productName; }
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }

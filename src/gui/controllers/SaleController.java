@@ -20,6 +20,7 @@ public class SaleController {
     @FXML private TableColumn<Sale, Integer> colId;
     @FXML private TableColumn<Sale, Integer> colSaleGroupId;
     @FXML private TableColumn<Sale, Integer> colProductId;
+    @FXML private TableColumn<Sale, String> colProductName; // Added
     @FXML private TableColumn<Sale, Integer> colQuantity;
     @FXML private TableColumn<Sale, Double> colTotalAmount;
     @FXML private TableColumn<Sale, String> colStatus;
@@ -35,6 +36,7 @@ public class SaleController {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colSaleGroupId.setCellValueFactory(new PropertyValueFactory<>("saleGroupId"));
         colProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        colProductName.setCellValueFactory(new PropertyValueFactory<>("productName")); // Added
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colTotalAmount.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));

@@ -76,7 +76,10 @@ public class SaleService {
 
     public static List<Sale> getAllSales() {
         List<Sale> sales = new ArrayList<>();
-        String sql = "SELECT * FROM Sales WHERE saleGroupId IS NOT NULL"; // Exclude initial group row
+        String sql = "SELECT s.id, s.saleGroupId, s.productId, p.name AS productName, s.quantity, s.totalAmount, s.saleTime, s.status " +
+                     "FROM Sales s " +
+                     "JOIN Products p ON s.productId = p.id " +
+                     "WHERE s.saleGroupId IS NOT NULL";
 
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -87,6 +90,7 @@ public class SaleService {
                         rs.getInt("id"),
                         rs.getInt("saleGroupId"),
                         rs.getInt("productId"),
+                        rs.getString("productName"), // Fetch product name
                         rs.getInt("quantity"),
                         rs.getDouble("totalAmount"),
                         rs.getTimestamp("saleTime"),

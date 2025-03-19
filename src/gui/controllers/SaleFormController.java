@@ -18,6 +18,7 @@ public class SaleFormController {
     @FXML private TextField quantityField;
     @FXML private TableView<Sale> cartTable;
     @FXML private TableColumn<Sale, Integer> colProductId;
+    @FXML private TableColumn<Sale, String> colProductName; // Added
     @FXML private TableColumn<Sale, Integer> colQuantity;
     @FXML private TableColumn<Sale, Double> colTotalAmount;
     @FXML private Label totalLabel;
@@ -25,18 +26,19 @@ public class SaleFormController {
     @FXML private Button confirmButton;
 
     private SaleController saleController;
-    private Sale currentSale; // For update mode
+    private Sale currentSale;
     private ObservableList<Product> productList = FXCollections.observableArrayList();
     private ObservableList<Sale> cartList = FXCollections.observableArrayList();
     private int saleGroupId = -1;
 
     @FXML
     public void initialize() {
-        categoryCombo.setItems(FXCollections.observableArrayList("All", "Phones", "Headphones")); // Adjust categories
+        categoryCombo.setItems(FXCollections.observableArrayList("All", "Phones", "Headphones"));
         categoryCombo.setValue("All");
         loadProducts("All");
 
         colProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        colProductName.setCellValueFactory(new PropertyValueFactory<>("productName")); // Added
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colTotalAmount.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
         cartTable.setItems(cartList);
@@ -50,7 +52,7 @@ public class SaleFormController {
 
     private void loadProducts(String category) {
         productList.clear();
-        List<Product> products = ProductService.getAllProducts(); // Assuming this exists
+        List<Product> products = ProductService.getAllProducts();
         if (!"All".equals(category)) {
             products.removeIf(p -> !category.equals(p.getCategory()));
         }
@@ -76,7 +78,6 @@ public class SaleFormController {
         this.saleController = controller;
         this.currentSale = sale;
         if (sale != null) {
-            // Update mode: Load single item
             Product product = ProductService.getProductById(sale.getProductId());
             productCombo.setValue(product);
             quantityField.setText(String.valueOf(sale.getQuantity()));
@@ -86,7 +87,6 @@ public class SaleFormController {
             cartTable.setVisible(false);
             totalLabel.setVisible(false);
         } else {
-            // Add mode: New sale group
             saleGroupId = SaleService.createSaleGroup();
             if (saleGroupId == -1) {
                 showAlert("Error", "Failed to create sale group!", Alert.AlertType.ERROR);
@@ -108,7 +108,8 @@ public class SaleFormController {
             int quantity = Integer.parseInt(quantityField.getText());
             if (SaleService.addSaleItem(saleGroupId, selectedProduct.getId(), quantity)) {
                 Sale sale = new Sale(saleGroupId, selectedProduct.getId(), quantity);
-                sale.setTotalAmount(quantity * ProductService.getProductById(selectedProduct.getId()).getPrice());
+                sale.setProductName(selectedProduct.getName()); // Set product name
+                sale.setTotalAmount(quantity * selectedProduct.getPrice());
                 cartList.add(sale);
                 updateTotal();
                 clearFields();
