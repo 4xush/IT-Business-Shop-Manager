@@ -20,6 +20,7 @@ public class ProductController {
     @FXML private TableView<Product> productTable;
     @FXML private TableColumn<Product, Integer> colId;
     @FXML private TableColumn<Product, String> colName;
+    @FXML private TableColumn<Product, String> colCategory;
     @FXML private TableColumn<Product, Double> colPrice;
     @FXML private TableColumn<Product, Integer> colStock;
 
@@ -29,7 +30,9 @@ public class ProductController {
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         loadProductData();
     }
@@ -90,7 +93,7 @@ public class ProductController {
             Stage stage = (Stage) productTable.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("IT Service Shop Dashboard");
+            stage.setTitle("IT Business Shop Dashboard");
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {

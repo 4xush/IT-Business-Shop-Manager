@@ -1,8 +1,10 @@
 package gui.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.Product;
@@ -10,40 +12,36 @@ import services.ProductService;
 
 public class ProductFormController {
 
-    @FXML
-    private TextField productNameField;
-    @FXML
-    private TextField categoryField;
-    @FXML
-    private TextField priceField;
-    @FXML
-    private TextField stockField;
-    @FXML
-    private Button addButton;
-    @FXML
-    private Button updateButton;
+    @FXML private TextField productNameField;
+    @FXML private ComboBox<String> categoryComboBox;
+    @FXML private TextField priceField;
+    @FXML private TextField stockField;
+    @FXML private Button addButton;
+    @FXML private Button updateButton;
 
-    private ProductController productController; // Reference to refresh the parent table
-    private Product currentProduct; // To track the product being edited
+    private ProductController productController;
+    private Product currentProduct;
 
     @FXML
     public void initialize() {
-        // No table setup needed since TableView is removed
+        // Populate ComboBox with predefined categories
+        categoryComboBox.setItems(FXCollections.observableArrayList(
+            "Phones", "Headphones", "Laptops", "Charger"
+        ));
     }
 
-    // Set product data and controller reference
     public void setProduct(Product product, ProductController controller) {
         this.productController = controller;
         this.currentProduct = product;
         if (product != null) {
             productNameField.setText(product.getName());
-            categoryField.setText(product.getCategory());
+            categoryComboBox.setValue(product.getCategory());
             priceField.setText(String.valueOf(product.getPrice()));
             stockField.setText(String.valueOf(product.getStock()));
-            addButton.setDisable(true); // Disable add for update mode
+            addButton.setDisable(true);
             updateButton.setDisable(false);
         } else {
-            clearFields(); // Clear fields for adding a new product
+            clearFields();
             addButton.setDisable(false);
             updateButton.setDisable(true);
         }
@@ -53,14 +51,14 @@ public class ProductFormController {
     private void addProduct() {
         if (validateInputs()) {
             String name = productNameField.getText();
-            String category = categoryField.getText();
+            String category = categoryComboBox.getEditor().getText().trim();
             double price = Double.parseDouble(priceField.getText());
             int stock = Integer.parseInt(stockField.getText());
 
             ProductService.addProduct(name, category, price, stock);
             showAlert("Success", "Product added successfully!", Alert.AlertType.INFORMATION);
             if (productController != null)
-                productController.loadProductData(); // Refresh parent table
+                productController.loadProductData();
             clearFields();
         }
     }
@@ -74,23 +72,23 @@ public class ProductFormController {
         if (validateInputs()) {
             int id = currentProduct.getId();
             String name = productNameField.getText();
-            String category = categoryField.getText();
+            String category = categoryComboBox.getEditor().getText().trim();
             double price = Double.parseDouble(priceField.getText());
             int stock = Integer.parseInt(stockField.getText());
 
             ProductService.updateProduct(id, name, category, price, stock);
             showAlert("Success", "Product updated successfully!", Alert.AlertType.INFORMATION);
             if (productController != null)
-                productController.loadProductData(); // Refresh parent
+                productController.loadProductData();
             clearFields();
         }
     }
 
     private boolean validateInputs() {
         if (productNameField.getText().trim().isEmpty() ||
-                categoryField.getText().trim().isEmpty() ||
-                priceField.getText().trim().isEmpty() ||
-                stockField.getText().trim().isEmpty()) {
+            categoryComboBox.getEditor().getText().trim().isEmpty() ||
+            priceField.getText().trim().isEmpty() ||
+            stockField.getText().trim().isEmpty()) {
             showAlert("Validation Error", "All fields are required!", Alert.AlertType.WARNING);
             return false;
         }
@@ -108,7 +106,8 @@ public class ProductFormController {
 
     private void clearFields() {
         productNameField.clear();
-        categoryField.clear();
+        categoryComboBox.setValue(null);
+        categoryComboBox.getEditor().clear();
         priceField.clear();
         stockField.clear();
     }

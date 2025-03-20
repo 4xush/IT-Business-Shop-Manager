@@ -70,4 +70,4 @@ java --module-path "lib/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxm
 
 
 ## java fxml
-javac --module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml /home/ayush/Desktop/IT-Service-Shop/src/gui/Main.java
+javac --module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml /home/ayush/Desktop/IT-Business-Shop/src/gui/Main.java

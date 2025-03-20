@@ -10,90 +10,135 @@
             prefWidth="1000" 
             prefHeight="600">
     
-    <VBox spacing="25" alignment="TOP_CENTER" 
-          AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" 
-          AnchorPane.topAnchor="30" AnchorPane.bottomAnchor="30">
+    <VBox spacing="25" 
+          alignment="TOP_CENTER" 
+          AnchorPane.leftAnchor="30" 
+          AnchorPane.rightAnchor="30" 
+          AnchorPane.topAnchor="30" 
+          AnchorPane.bottomAnchor="30">
         
         <!-- Header Section -->
-            <VBox spacing="10" alignment="CENTER">
-                <Label text="📊 Shop Performance Report" 
-                       styleClass="report-title"/>
-                <Label fx:id="reportPeriodLabel" 
-                       styleClass="report-subtitle"/>
-            </VBox>
+        <VBox spacing="10" 
+              alignment="CENTER">
+            <Label text="📊 Shop Performance Report" 
+                   styleClass="report-title"/>
+            <Label fx:id="reportPeriodLabel" 
+                   styleClass="report-subtitle"/>
+        </VBox>
+        
         <!-- Period Selection -->
-        <HBox spacing="20" alignment="CENTER">
+        <HBox spacing="20" 
+              alignment="CENTER">
             <ComboBox fx:id="periodComboBox" 
                       style="-fx-font-size: 14px; -fx-pref-width: 200; -fx-pref-height: 35;" 
                       promptText="Select Period"/>
-            <Button text="Generate Report" onAction="#generateReport" 
+            <Button text="Generate Report" 
+                    onAction="#generateReport" 
                     style="-fx-font-size: 14px; -fx-pref-width: 150; -fx-background-color: #0984e3; -fx-text-fill: white;"/>
         </HBox>
 
         <!-- Report Data Grid -->
         <GridPane style="-fx-background-color: #f5f6fa; -fx-padding: 25; -fx-background-radius: 10;" 
-                  hgap="40" vgap="20">
+                  hgap="40" 
+                  vgap="20">
             <columnConstraints>
                 <ColumnConstraints prefWidth="250" halignment="LEFT"/>
-                <ColumnConstraints prefWidth="250" halignment="LEFT"/>
+                <ColumnConstraints prefWidth="150" halignment="LEFT"/>
+                <ColumnConstraints prefWidth="150" halignment="CENTER"/>
             </columnConstraints>
             
             <!-- Sales Section -->
             <Label text="Total Sales:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="0" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="totalSalesLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2d3436;" 
-                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="0" 
+                   GridPane.columnIndex="1"/>
+            <Button text="Show Sales" 
+                    onAction="#showSales" 
+                    style="-fx-font-size: 12px; -fx-pref-width: 100; -fx-background-color: #dfe6e9; -fx-text-fill: #2d3436;" 
+                    GridPane.rowIndex="0" 
+                    GridPane.columnIndex="2"/>
             
             <Label text="Sales Revenue:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="1" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="totalSalesAmountLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00b894;" 
-                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="1" 
+                   GridPane.columnIndex="1"/>
 
             <!-- Repairs Section -->
             <Label text="Completed Repairs:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="2" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="totalRepairsLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2d3436;" 
-                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="2" 
+                   GridPane.columnIndex="1"/>
+            <Button text="Show Repairs" 
+                    onAction="#showRepairs" 
+                    style="-fx-font-size: 12px; -fx-pref-width: 100; -fx-background-color: #dfe6e9; -fx-text-fill: #2d3436;" 
+                    GridPane.rowIndex="2" 
+                    GridPane.columnIndex="2"/>
             
             <Label text="Repair Revenue:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="3" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="totalRepairRevenueLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00b894;" 
-                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="3" 
+                   GridPane.columnIndex="1"/>
 
             <!-- Recharges Section -->
             <Label text="Mobile Recharges:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="4" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="totalRechargesLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2d3436;" 
-                   GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="4" 
+                   GridPane.columnIndex="1"/>
+            <Button text="Show Recharges" 
+                    onAction="#showRecharges" 
+                    style="-fx-font-size: 12px; -fx-pref-width: 100; -fx-background-color: #dfe6e9; -fx-text-fill: #2d3436;" 
+                    GridPane.rowIndex="4" 
+                   GridPane.columnIndex="2"/>
             
             <Label text="Recharge Amount:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="5" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="totalRechargeAmountLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #00b894;" 
-                   GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="5" 
+                   GridPane.columnIndex="1"/>
 
             <!-- Inventory Section -->
             <Label text="Low Stock Items:" 
                    style="-fx-font-size: 16px; -fx-text-fill: #636e72;" 
-                   GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                   GridPane.rowIndex="6" 
+                   GridPane.columnIndex="0"/>
             <Label fx:id="lowStockLabel" 
                    style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d63031;" 
-                   GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                   GridPane.rowIndex="6" 
+                   GridPane.columnIndex="1"/>
+            <Button text="Show Items" 
+                    onAction="#showLowStock" 
+                    style="-fx-font-size: 12px; -fx-pref-width: 100; -fx-background-color: #dfe6e9; -fx-text-fill: #2d3436;" 
+                    GridPane.rowIndex="6" 
+                    GridPane.columnIndex="2"/>
         </GridPane>
 
         <!-- Navigation -->
-        <Button fx:id="backButton" text="Back to Dashboard" onAction="#backToDashboard" 
+        <Button fx:id="backButton" 
+                text="Back to Dashboard" 
+                onAction="#backToDashboard" 
                 style="-fx-font-size: 14px; -fx-pref-width: 200; -fx-background-color: #dfe6e9; -fx-text-fill: #2d3436;"/>
     </VBox>
 </AnchorPane>

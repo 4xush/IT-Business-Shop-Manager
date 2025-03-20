@@ -8,8 +8,9 @@
         <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                <TableColumn fx:id="colName" text="Name" prefWidth="300"/>
-                <TableColumn fx:id="colPrice" text="Price" prefWidth="100"/>
+                <TableColumn fx:id="colName" text="Name" prefWidth="250"/>
+                <TableColumn fx:id="colCategory" text="Category" prefWidth="150"/>
+                <TableColumn fx:id="colPrice" text="Price" prefWidth="120"/>
                 <TableColumn fx:id="colStock" text="Stock" prefWidth="100"/>
             </columns>
         </TableView>

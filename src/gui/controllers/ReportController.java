@@ -9,6 +9,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.Report;
 import services.ReportService;
+import services.ReportService.SaleItem;
+import services.ReportService.RepairItem;
+import services.ReportService.RechargeItem;
+import services.ReportService.ProductItem;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +33,7 @@ public class ReportController {
 
     private final ReportService reportService = new ReportService();
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
+    private Report currentReport; // Store the current report for "Show" buttons
 
     @FXML
     public void initialize() {
@@ -45,8 +50,8 @@ public class ReportController {
         }
 
         try {
-            Report report = reportService.generateReport(period.toLowerCase());
-            updateReportDisplay(report);
+            currentReport = reportService.generateReport(period.toLowerCase());
+            updateReportDisplay(currentReport);
         } catch (Exception e) {
             showAlert("Report Error", "Failed to generate report: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
@@ -77,13 +82,69 @@ public class ReportController {
     }
 
     @FXML
+    private void showSales() {
+        if (currentReport == null || currentReport.getSalesItems().isEmpty()) {
+            showAlert("Info", "No sales to display.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        StringBuilder details = new StringBuilder("Sales Details:\n");
+        for (SaleItem item : currentReport.getSalesItems()) {
+            details.append(String.format("ID: %d, Amount: ₹%,.2f, Time: %s\n",
+                item.getSaleId(), item.getTotalAmount(), item.getSaleTime().format(dateFormatter)));
+        }
+        showAlert("Sales", details.toString(), Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void showRepairs() {
+        if (currentReport == null || currentReport.getRepairItems().isEmpty()) {
+            showAlert("Info", "No repairs to display.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        StringBuilder details = new StringBuilder("Repair Details:\n");
+        for (RepairItem item : currentReport.getRepairItems()) {
+            details.append(String.format("ID: %d, Cost: ₹%,.2f, Time: %s\n",
+                item.getRepairId(), item.getEstimatedCost(), item.getCreatedAt().format(dateFormatter)));
+        }
+        showAlert("Repairs", details.toString(), Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void showRecharges() {
+        if (currentReport == null || currentReport.getRechargeItems().isEmpty()) {
+            showAlert("Info", "No recharges to display.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        StringBuilder details = new StringBuilder("Recharge Details:\n");
+        for (RechargeItem item : currentReport.getRechargeItems()) {
+            details.append(String.format("ID: %d, Amount: ₹%,.2f, Time: %s\n",
+                item.getRechargeId(), item.getAmount(), item.getRequestTime().format(dateFormatter)));
+        }
+        showAlert("Recharges", details.toString(), Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void showLowStock() {
+        if (currentReport == null || currentReport.getLowStockItems().isEmpty()) {
+            showAlert("Info", "No low stock items to display.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        StringBuilder details = new StringBuilder("Low Stock Items:\n");
+        for (ProductItem item : currentReport.getLowStockItems()) {
+            details.append(String.format("ID: %d, Name: %s, Stock: %d\n",
+                item.getProductId(), item.getName(), item.getStock()));
+        }
+        showAlert("Low Stock", details.toString(), Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
     private void backToDashboard() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));
             AnchorPane root = loader.load();
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("IT Service Shop Dashboard");
+            stage.setTitle("IT Business Shop Dashboard");
             stage.setMaximized(true);
         } catch (IOException e) {
             showAlert("Navigation Error", "Failed to load dashboard: " + e.getMessage(), Alert.AlertType.ERROR);

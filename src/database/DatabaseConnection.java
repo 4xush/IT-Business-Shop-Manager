@@ -26,12 +26,12 @@ public class DatabaseConnection {
                 "price REAL NOT NULL," +
                 "stock INTEGER NOT NULL," +
                 "date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-    
+
         String saleGroupsTable = "CREATE TABLE IF NOT EXISTS SaleGroups (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "saleTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                 "status TEXT DEFAULT 'Pending');";
-    
+
         String salesTable = "CREATE TABLE IF NOT EXISTS Sales (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "saleGroupId INTEGER NOT NULL," +
@@ -42,7 +42,7 @@ public class DatabaseConnection {
                 "status TEXT DEFAULT 'Pending'," +
                 "FOREIGN KEY (saleGroupId) REFERENCES SaleGroups(id)," +
                 "FOREIGN KEY (productId) REFERENCES Products(id));";
-    
+
         String repairsTable = "CREATE TABLE IF NOT EXISTS Repairs (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "customerName TEXT NOT NULL, " +
@@ -52,18 +52,28 @@ public class DatabaseConnection {
                 "estimatedCost REAL NOT NULL, " +
                 "status TEXT DEFAULT 'Pending', " +
                 "createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-    
+        String rechargeTable = "CREATE TABLE IF NOT EXISTS Recharges (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "customerMobile TEXT NOT NULL, " +
+                "operator TEXT NOT NULL, " +
+                "amount REAL NOT NULL, " +
+                "status TEXT DEFAULT 'Pending', " +
+                "requestTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+
         try (Connection conn = connect();
-             PreparedStatement stmt1 = conn.prepareStatement(productsTable);
-             PreparedStatement stmt2 = conn.prepareStatement(saleGroupsTable);
-             PreparedStatement stmt3 = conn.prepareStatement(salesTable);
-             PreparedStatement stmt4 = conn.prepareStatement(repairsTable)) {
+                PreparedStatement stmt1 = conn.prepareStatement(productsTable);
+                PreparedStatement stmt2 = conn.prepareStatement(saleGroupsTable);
+                PreparedStatement stmt3 = conn.prepareStatement(salesTable);
+                PreparedStatement stmt4 = conn.prepareStatement(repairsTable);
+                PreparedStatement stmt5 = conn.prepareStatement(rechargeTable)) {
             stmt1.execute();
             stmt2.execute();
             stmt3.execute();
             stmt4.execute();
+            stmt5.execute();
             System.out.println("Tables Created Successfully");
-            System.out.println("Using database file: " + new java.io.File(URL.replace("jdbc:sqlite:", "")).getAbsolutePath());
+            System.out.println(
+                    "Using database file: " + new java.io.File(URL.replace("jdbc:sqlite:", "")).getAbsolutePath());
         } catch (SQLException e) {
             System.out.println("Error Creating Tables: " + e.getMessage());
         }

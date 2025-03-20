@@ -33,7 +33,7 @@ public class SaleFormController {
 
     @FXML
     public void initialize() {
-        categoryCombo.setItems(FXCollections.observableArrayList("All", "Phones", "Headphones"));
+        categoryCombo.setItems(FXCollections.observableArrayList("All", "Phones", "Headphones", "Laptops", "Charger"));
         categoryCombo.setValue("All");
         loadProducts("All");
 

@@ -1,7 +1,7 @@
 
 ## access db -
 cd /path/to/your/project
-Desktop/IT-Service-Shop
+Desktop/IT-Business-Shop
 
 Start the SQLite shell:
 sqlite3 kingcom.db
@@ -21,7 +21,7 @@ SELECT * FROM Sales;
 PRAGMA table_info(Repairs);
 
 ## remove db
-remove db -rm /home/ayush/Desktop/IT-Service-Shop/kingcom.db
+remove db -rm /home/ayush/Desktop/IT-Business-Shop/kingcom.db
 
 
 ## drop particular schema

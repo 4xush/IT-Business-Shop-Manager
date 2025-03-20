@@ -9,7 +9,7 @@ import java.util.List;
 public class RechargeService {
 
     public boolean addRecharge(Recharge recharge) {
-        String sql = "INSERT INTO recharges (customer_mobile, operator, amount, status, request_time) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO recharges (customerMobile, operator, amount, status, requestTime) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, recharge.getCustomerMobile());
@@ -50,11 +50,11 @@ public class RechargeService {
             while (rs.next()) {
                 recharges.add(new Recharge(
                     rs.getInt("id"),
-                    rs.getString("customer_mobile"),
+                    rs.getString("customerMobile"),
                     rs.getString("operator"),
                     rs.getDouble("amount"),
                     rs.getString("status"),
-                    rs.getTimestamp("request_time").toLocalDateTime()
+                    rs.getTimestamp("requestTime").toLocalDateTime()
                 ));
             }
         } catch (SQLException e) {
