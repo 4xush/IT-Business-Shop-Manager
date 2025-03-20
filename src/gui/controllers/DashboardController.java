@@ -76,7 +76,7 @@ public class DashboardController {
     @FXML
     private void openDeveloperPage() {
         if (hostServices != null) {
-            hostServices.showDocument("https://github.com/4xush"); 
+            hostServices.showDocument("https://github.com/4xush/IT-Business-Shop-Manager"); 
         } else {
             System.out.println("HostServices not initialized!");
         }
