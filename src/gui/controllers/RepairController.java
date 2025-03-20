@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import models.Repair;
 import services.RepairService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class RepairController {
@@ -25,8 +26,8 @@ public class RepairController {
     @FXML private TableColumn<Repair, Double> colEstimatedCost;
     @FXML private TableColumn<Repair, String> colStatus;
     @FXML private TableColumn<Repair, java.sql.Timestamp> colCreatedAt;
-    @FXML private Button updateButton;  // Add fx:id to "Update Status" button
-    @FXML private Button deleteButton;  // Add fx:id to "Delete Repair" button
+    @FXML private Button updateButton;
+    @FXML private Button deleteButton;
 
     private ObservableList<Repair> repairList = FXCollections.observableArrayList();
 
@@ -43,7 +44,6 @@ public class RepairController {
         
         loadRepairData();
 
-        // Add listener to dynamically enable/disable buttons based on selection
         repairTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 boolean isCompleted = "Completed".equals(newSelection.getStatus());
@@ -100,13 +100,30 @@ public class RepairController {
         }
     }
 
+    @FXML
+    private void backToDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));
+            AnchorPane root = loader.load();
+            Stage stage = (Stage) repairTable.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("IT Service Shop Dashboard");
+            stage.setMaximized(true);
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Error", "Failed to return to dashboard: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
     private void openRepairForm(Repair repair) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/RepairForm.fxml"));
             AnchorPane root = loader.load();
             RepairFormController controller = loader.getController();
             controller.setRepair(repair, this);
-            Stage stage = new Stage();
+            Stage stage = new Stage(); // Still opens form in new window
             stage.setTitle(repair == null ? "Add Repair" : "Update Repair");
             stage.setScene(new Scene(root));
             stage.show();

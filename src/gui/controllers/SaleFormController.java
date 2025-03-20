@@ -200,7 +200,7 @@ public class SaleFormController {
 
     private void updateTotal() {
         double total = cartList.stream().mapToDouble(Sale::getTotalAmount).sum();
-        totalLabel.setText("Total: $" + String.format("%.2f", total));
+        totalLabel.setText("Total:  ₹" + String.format("%.2f", total));
     }
 
     private void closeWindow() {

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import models.Recharge;
 import services.RechargeService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class RechargeController {
@@ -56,7 +57,24 @@ public class RechargeController {
         if (selected != null) {
             openRechargeForm(selected);
         } else {
-            showAlert("No Recharge Selected", "Please select a recharge to update.");
+            showAlert("No Recharge Selected", "Please select a recharge to update.", Alert.AlertType.WARNING);
+        }
+    }
+
+    @FXML
+    private void backToDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));
+            AnchorPane root = loader.load();
+            Stage stage = (Stage) rechargeTable.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("IT Service Shop Dashboard");
+            stage.setMaximized(true);
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Error", "Failed to return to dashboard: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
@@ -67,17 +85,17 @@ public class RechargeController {
             RechargeFormController controller = loader.getController();
             controller.setRecharge(recharge, this);
 
-            Stage stage = new Stage();
+            Stage stage = new Stage(); // Form still opens in a new window
             stage.setTitle(recharge == null ? "Add Recharge" : "Update Recharge");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
-            showAlert("Error", "Failed to open recharge form: " + e.getMessage());
+            showAlert("Error", "Failed to open recharge form: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

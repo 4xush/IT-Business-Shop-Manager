@@ -11,7 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.Product;
 import services.ProductService;
-import gui.controllers.ProductFormController;
+
+import java.io.IOException;
 import java.util.List;
 
 public class ProductController {
@@ -22,7 +23,6 @@ public class ProductController {
     @FXML private TableColumn<Product, Double> colPrice;
     @FXML private TableColumn<Product, Integer> colStock;
 
-    private ProductService productService = new ProductService();
     private ObservableList<Product> productList = FXCollections.observableArrayList();
 
     @FXML
@@ -35,7 +35,7 @@ public class ProductController {
     }
 
     public void loadProductData() {
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = ProductService.getAllProducts();
         productList.setAll(products);
         productTable.setItems(productList);
     }
@@ -51,7 +51,7 @@ public class ProductController {
         if (selected != null) {
             openProductForm(selected);
         } else {
-            showAlert("No Product Selected", "Please select a product to update.");
+            showAlert("No Product Selected", "Please select a product to update.", Alert.AlertType.WARNING);
         }
     }
 
@@ -62,7 +62,7 @@ public class ProductController {
             ProductService.deleteProduct(selected.getId());  // Static call
             loadProductData();
         } else {
-            showAlert("No Product Selected", "Please select a product to delete.");
+            showAlert("No Product Selected", "Please select a product to delete.", Alert.AlertType.WARNING);
         }
     }
 
@@ -75,14 +75,31 @@ public class ProductController {
             Stage stage = new Stage();
             stage.setTitle(product == null ? "Add Product" : "Update Product");
             stage.setScene(new Scene(root));
+            
             stage.show();
         } catch (Exception e) {
-            showAlert("Error", "Failed to open product form: " + e.getMessage());
+            showAlert("Error", "Failed to open product form: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+    @FXML
+    private void backToDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));
+            AnchorPane root = loader.load();
+            Stage stage = (Stage) productTable.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("IT Service Shop Dashboard");
+            stage.setMaximized(true);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

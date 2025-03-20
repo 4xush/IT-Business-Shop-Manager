@@ -33,7 +33,7 @@ javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
 ## Run tests 
 javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
 java -cp "bin:lib/sqlite-jdbc.jar" tests.RepairServiceTest
-
+java --module-path "lib/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml -cp "bin:lib/sqlite-jdbc.jar" tests.ReportServiceTest
 
 ## Features - Shop Owner can use
 

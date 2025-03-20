@@ -1,65 +1,99 @@
 package gui.controllers;
 
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import java.io.IOException;
 
 public class DashboardController {
 
-    // AnchorPane to anchor the method to the FXML (optional, if you need a reference point)
     @FXML
     private AnchorPane dashboardPane;
 
-    public void loadScene(String fxmlFile) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/" + fxmlFile));
-            Parent root = loader.load();
-            // Use the current stage from the dashboardPane or another node
-            Stage stage = (Stage) dashboardPane.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(true); // Fullscreen mode
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @FXML
+    private Button productButton;
+
+    @FXML
+    private Button saleButton;
+
+    @FXML
+    private Button repairButton;
+
+    @FXML
+    private Button rechargeButton;
+
+    @FXML
+    private Button reportButton;
+
+    @FXML
+    private Button developerButton;
+
+    private HostServices hostServices;
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
+
+    @FXML
+    public void initialize() {
+        productButton.setText("Product\nManagement");
+        saleButton.setText("Sale\nManagement");
+        repairButton.setText("Repair\nManagement");
+        rechargeButton.setText("Recharge\nManagement");
+        reportButton.setText("Reports");
+        developerButton.setText("View\nDeveloper\nPage");
     }
 
     @FXML
     private void openProductView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ProductView.fxml"));
-            AnchorPane root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Product Management");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView("../views/ProductView.fxml", "Product Management");
     }
 
     @FXML
     private void openSaleView() {
-        loadScene("SaleView.fxml");
+        loadView("../views/SaleView.fxml", "Sale Management");
     }
 
     @FXML
     private void openRepairView() {
-        loadScene("RepairView.fxml");
+        loadView("../views/RepairView.fxml", "Repair Management");
     }
 
     @FXML
     private void openRechargeView() {
-        loadScene("RechargeView.fxml");
+        loadView("../views/RechargeView.fxml", "Recharge Management");
     }
 
     @FXML
     private void openReportView() {
-        loadScene("ReportView.fxml");
+        loadView("../views/ReportView.fxml", "Report Management");
+    }
+
+    @FXML
+    private void openDeveloperPage() {
+        if (hostServices != null) {
+            hostServices.showDocument("https://github.com/4xush"); 
+        } else {
+            System.out.println("HostServices not initialized!");
+        }
+    }
+
+    private void loadView(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            AnchorPane root = loader.load();
+            Stage stage = (Stage) dashboardPane.getScene().getWindow(); // Use the current stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.setMaximized(true); 
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

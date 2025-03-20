@@ -2,25 +2,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.controllers.SaleFormController" prefWidth="600" prefHeight="400">
-    <VBox spacing="15" alignment="CENTER" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20">
-        <Label text="Sale Details" style="-fx-font-size: 20px;" alignment="CENTER"/>
-        <ComboBox fx:id="categoryCombo" promptText="Select Category" maxWidth="300"/>
-        <ComboBox fx:id="productCombo" promptText="Select Product" maxWidth="300"/>
-        <TextField fx:id="quantityField" promptText="Quantity" maxWidth="300"/>
-        <Button fx:id="addToCartButton" text="Add to Cart" onAction="#addToCart"/>
-        <TableView fx:id="cartTable" prefHeight="150">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.controllers.SaleFormController" prefWidth="800" prefHeight="600">
+    <VBox spacing="25" alignment="CENTER" AnchorPane.leftAnchor="40" AnchorPane.rightAnchor="40" AnchorPane.topAnchor="40" AnchorPane.bottomAnchor="40">
+        <Label text="Sale Form" style="-fx-font-size: 24px;" alignment="CENTER"/>
+        
+        <!-- Input Section -->
+        <VBox spacing="15" alignment="CENTER" prefWidth="400">
+            <ComboBox fx:id="categoryCombo" promptText="Select Category" prefWidth="300"/>
+            <ComboBox fx:id="productCombo" promptText="Select Product" prefWidth="300"/>
+            <TextField fx:id="quantityField" promptText="Quantity" prefWidth="300"/>
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="addToCartButton" text="Add to Cart" onAction="#addToCart" prefWidth="100"/>
+            </HBox>
+        </VBox>
+
+        <!-- Cart Table -->
+        <TableView fx:id="cartTable" VBox.vgrow="ALWAYS" prefWidth="600">
             <columns>
                 <TableColumn fx:id="colProductId" text="Product ID" prefWidth="100"/>
+                <TableColumn fx:id="colProductName" text="Product Name" prefWidth="200"/>
                 <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100"/>
                 <TableColumn fx:id="colTotalAmount" text="Total Amount" prefWidth="150"/>
             </columns>
         </TableView>
-        <Label fx:id="totalLabel" text="Total: $0.00"/>
-        <HBox spacing="10" alignment="CENTER">
-            <Button fx:id="confirmButton" text="Confirm Sale" onAction="#confirmSale"/>
-            <Button fx:id="updateButton" text="Update" onAction="#updateSale" visible="false"/>
-            <Button text="Cancel" onAction="#cancel"/>
-        </HBox>
+
+        <!-- Total and Buttons -->
+        <VBox spacing="15" alignment="CENTER">
+            <Label fx:id="totalLabel" style="-fx-font-size: 18px;"/>
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="confirmButton" text="Confirm Sale" onAction="#confirmSale" prefWidth="100"/>
+                <Button text="Update Sale" onAction="#updateSale" prefWidth="100"/>
+                <Button text="Cancel" onAction="#cancel" prefWidth="100"/>
+            </HBox>
+        </VBox>
     </VBox>
 </AnchorPane>
