@@ -11,26 +11,14 @@ import java.io.IOException;
 
 public class DashboardController {
 
-    @FXML
-    private AnchorPane dashboardPane;
-
-    @FXML
-    private Button productButton;
-
-    @FXML
-    private Button saleButton;
-
-    @FXML
-    private Button repairButton;
-
-    @FXML
-    private Button rechargeButton;
-
-    @FXML
-    private Button reportButton;
-
-    @FXML
-    private Button developerButton;
+    @FXML private AnchorPane dashboardPane;
+    @FXML private Button productButton;
+    @FXML private Button saleButton;
+    @FXML private Button repairButton;
+    @FXML private Button rechargeButton;
+    @FXML private Button reportButton;
+    @FXML private Button developerButton;
+    @FXML private Button settingsButton; // New button
 
     private HostServices hostServices;
 
@@ -46,6 +34,7 @@ public class DashboardController {
         rechargeButton.setText("Recharge\nManagement");
         reportButton.setText("Reports");
         developerButton.setText("View\nDeveloper\nPage");
+        settingsButton.setText("Settings"); // Initialize new button
     }
 
     @FXML
@@ -82,15 +71,20 @@ public class DashboardController {
         }
     }
 
+    @FXML
+    private void openSettingsView() {
+        loadView("../views/SettingsView.fxml", "Settings");
+    }
+
     private void loadView(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             AnchorPane root = loader.load();
-            Stage stage = (Stage) dashboardPane.getScene().getWindow(); // Use the current stage
+            Stage stage = (Stage) dashboardPane.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle(title);
-            stage.setMaximized(true); 
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

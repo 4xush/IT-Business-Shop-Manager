@@ -6,14 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class DatabaseConnection {
     private static final String URL = "jdbc:sqlite:kingcom.db";
+    private static Connection conn; // Store connection for reuse
 
     // Establish database connection
     public static Connection connect() throws SQLException {
-        Connection conn = DriverManager.getConnection(URL);
-        System.out.println("Connected to Database");
+        if (conn == null || conn.isClosed()) {
+            conn = DriverManager.getConnection(URL);
+            System.out.println("Connected to Database");
+        }
         return conn;
     }
 
@@ -105,6 +111,30 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.out.println("Error checking schema: " + e.getMessage());
         }
+    }
+
+    // Export the database to a user-specified file
+    public static void exportDatabase(File destination) throws Exception {
+        File source = new File("kingcom.db"); // Current DB file
+        if (!source.exists()) {
+            throw new Exception("Database file 'kingcom.db' not found!");
+        }
+        Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    // Load a database from a user-specified file
+    public static void loadDatabase(File source) throws Exception {
+        File destination = new File("kingcom.db"); // Current DB file
+        if (!source.exists()) {
+            throw new Exception("Source database file not found!");
+        }
+        // Close any existing connection before overwriting
+        if (conn != null && !conn.isClosed()) {
+            conn.close();
+        }
+        Files.copy(source.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        // Reconnect to the new database
+        connect();
     }
 
     public static void main(String[] args) {
