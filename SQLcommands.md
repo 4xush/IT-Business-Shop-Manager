@@ -1,6 +1,6 @@
 ## Access db -
 cd /path/to/project
-Desktop/IT-Business-Shop
+Desktop/ShopSync Manager
 
 ## To Start the SQLite shell:
 sqlite3 kingcom.db
@@ -19,7 +19,7 @@ SELECT * FROM Sales;
 PRAGMA table_info(Repairs);
 
 ## Remove db
-remove db : -rm /home/ayush/Desktop/IT-Business-Shop/kingcom.db
+remove db : -rm /home/ayush/Desktop/ShopSync Manager/kingcom.db
 
 ## drop particular schema
 DROP TABLE IF EXISTS sales;

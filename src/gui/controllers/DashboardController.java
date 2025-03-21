@@ -18,7 +18,7 @@ public class DashboardController {
     @FXML private Button rechargeButton;
     @FXML private Button reportButton;
     @FXML private Button developerButton;
-    @FXML private Button settingsButton; // New button
+    @FXML private Button settingsButton;
 
     private HostServices hostServices;
 
@@ -34,7 +34,7 @@ public class DashboardController {
         rechargeButton.setText("Recharge\nManagement");
         reportButton.setText("Reports");
         developerButton.setText("View\nDeveloper\nPage");
-        settingsButton.setText("Settings"); // Initialize new button
+        settingsButton.setText("Settings");
     }
 
     @FXML
@@ -64,10 +64,18 @@ public class DashboardController {
 
     @FXML
     private void openDeveloperPage() {
-        if (hostServices != null) {
-            hostServices.showDocument("https://github.com/4xush/IT-Business-Shop-Manager"); 
+        if (hostServices == null) {
+            System.out.println("HostServices not initialized yet! Retrying after setup...");
+            // Fallback: Could show an alert or wait for initialization
+            javafx.application.Platform.runLater(() -> {
+                if (hostServices != null) {
+                    hostServices.showDocument("https://github.com/4xush/ShopSync-Manager");
+                } else {
+                    System.out.println("HostServices still null after retry!");
+                }
+            });
         } else {
-            System.out.println("HostServices not initialized!");
+            hostServices.showDocument("https://github.com/4xush/ShopSync-Manager");
         }
     }
 

@@ -67,7 +67,7 @@ public class SettingsController {
             Stage stage = (Stage) backButton.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("IT Service Shop Dashboard");
+            stage.setTitle("ShopSync Manager Dashboard");
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {

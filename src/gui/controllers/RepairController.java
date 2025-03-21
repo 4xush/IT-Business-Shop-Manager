@@ -108,7 +108,7 @@ public class RepairController {
             Stage stage = (Stage) repairTable.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("IT Business Shop Dashboard");
+            stage.setTitle("ShopSync Manager Dashboard");
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {

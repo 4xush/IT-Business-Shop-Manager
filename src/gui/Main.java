@@ -18,7 +18,7 @@ public class Main extends Application {
         DashboardController controller = loader.getController();
         controller.setHostServices(getHostServices());
         Scene scene = new Scene(root);
-        primaryStage.setTitle("IT Business Shop Dashboard");
+        primaryStage.setTitle("ShopSync Manager Dashboard");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();

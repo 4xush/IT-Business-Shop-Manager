@@ -144,7 +144,7 @@ public class ReportController {
             AnchorPane root = loader.load();
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("IT Business Shop Dashboard");
+            stage.setTitle("ShopSync Manager Dashboard");
             stage.setMaximized(true);
         } catch (IOException e) {
             showAlert("Navigation Error", "Failed to load dashboard: " + e.getMessage(), Alert.AlertType.ERROR);

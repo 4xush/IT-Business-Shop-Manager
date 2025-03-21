@@ -20,7 +20,7 @@
         <!-- Header Section -->
         <VBox spacing="10" 
               alignment="CENTER">
-            <Label text="📊 Shop Performance Report" 
+            <Label text="📊 Business Performance Report" 
                    styleClass="report-title"/>
             <Label fx:id="reportPeriodLabel" 
                    styleClass="report-subtitle"/>
