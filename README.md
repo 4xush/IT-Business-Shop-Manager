@@ -1,3 +1,71 @@
+# ShopSync Manager
+
+A JavaFX-based desktop application for managing a mobile phone repair and sales shop.
+
+## Prerequisites
+
+- Java 17 or later
+- Maven 3.6 or later
+- SQLite 3
+
+## Building the Project
+
+1. Clone the repository:
+```bash
+git clone https://github.com/4xush/ShopSync-Manager.git
+cd shopsync-manager
+```
+
+2. Build the project using Maven:
+```bash
+mvn clean package
+```
+
+3. Run the application:
+```bash
+mvn javafx:run
+```
+
+## Development
+
+The project uses the following technologies:
+- JavaFX for the GUI
+- SQLite for the database
+- Maven for build and dependency management
+
+### Project Structure
+
+```
+src/
+├── main/
+│   ├── java/
+│   │   ├── gui/           # GUI-related classes
+│   │   ├── database/      # Database-related classes
+│   │   ├── models/        # Data models
+│   │   ├── services/      # Business logic
+│   │   └── utils/         # Utility classes
+│   └── resources/
+│       ├── *.fxml         # FXML files for GUI layouts
+│       └── kingcom.db     # SQLite database file
+```
+
+## Features
+
+- Dashboard with key metrics
+- Product management
+- Sales tracking
+- Repair service management
+- Customer management
+- Reports generation
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
 ## ShopSync Manager
 
 ShopSync Manager is a JavaFX-based desktop application designed to streamline small tech shop operations. Manage product sales, repairs, mobile recharges, and inventory—all in one place. Powered by a SQLite backend, it offers real-time reporting, category-based product tracking (Phones, Headphones, etc.), and a user-friendly interface for shop owners on the go.
@@ -17,6 +85,11 @@ Dependencies are managed manually via referenced libraries:
         lib/**/*.jar (all JARs in lib/ and subdirectories)
         lib/sqlite-jdbc.jar (SQLite JDBC driver)
         lib/javafx-sdk (JavaFX SDK folder)
+
+
+______________________________________________________
+
+## Without using Maven 
 
 ## Required Dependencies-
 
@@ -49,6 +122,10 @@ javac -d bin -cp "lib/sqlite-jdbc.jar" $(find src -name "*.java")
 java -cp "bin:lib/sqlite-jdbc.jar" tests.RepairServiceTest
 java --module-path "lib/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml -cp "bin:lib/sqlite-jdbc.jar" tests.ReportServiceTest
 
+
+
+______________________________________________________
+
 ## Uses
 
 ShopSync Manager empowers shop owners with these practical uses:
@@ -80,9 +157,9 @@ ShopSync Manager empowers shop owners with these practical uses:
 
 ## Contributing
 
-Fork the repo, make your changes, and submit a pull request. Issues and feature requests are welcome—let’s level up ShopSync Manager together!
+Fork the repo, make your changes, and submit a pull request. Issues and feature requests are welcome—let's level up ShopSync Manager together!
 
 
 ## Acknowledgments
 
-Built with 🔥 by Ayush Kumar for shop owners everywhere. Big thanks to the JavaFX and SQLite communities!
+Built by Ayush Kumar for shop owners everywhere. 

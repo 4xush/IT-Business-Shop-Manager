@@ -1,19 +1,42 @@
-# Compiled class files
+# Maven
+target/
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Compiled files
 *.class
+*.jar
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
 
 bin
 lib
-
-# Log files
-*.log
 
 # Package Files #
 *.jar
 *.war
 *.ear
 
-
-
-# VS Code files
-.vscode/
-*.db
+# Maven Project Structure
+src/
+├── main/
+│   ├── java/          # Source code
+│   └── resources/     # Resources (FXML files, database)
