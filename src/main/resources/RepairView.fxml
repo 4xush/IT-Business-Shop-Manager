@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.controllers.RepairController" prefWidth="1000" prefHeight="600">
+    <VBox spacing="20" alignment="CENTER" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20">
+        <Label text="Repair Management" style="-fx-font-size: 24px;" alignment="CENTER"/>
+        <TableView fx:id="repairTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colCustomerName" text="Customer Name" prefWidth="150"/>
+                <TableColumn fx:id="colPhoneNumber" text="Phone Number" prefWidth="120"/>
+                <TableColumn fx:id="colDeviceModel" text="Device Model" prefWidth="150"/>
+                <TableColumn fx:id="colIssueDescription" text="Issue Description" prefWidth="250"/>
+                <TableColumn fx:id="colEstimatedCost" text="Estimated Cost" prefWidth="120"/>
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                <TableColumn fx:id="colCreatedAt" text="Created At" prefWidth="150"/>
+            </columns>
+        </TableView>
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Add Repair" onAction="#addRepair" prefWidth="120"/>
+            <Button fx:id="updateButton" text="Update Status" onAction="#updateRepair" prefWidth="120"/>
+            <Button fx:id="deleteButton" text="Delete Repair" onAction="#deleteRepair" prefWidth="120"/>
+            <Button text="Back to Dashboard" onAction="#backToDashboard" prefWidth="160"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

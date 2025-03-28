@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane fx:id="dashboardPane" xmlns:fx="http://javafx.com/fxml" fx:controller="gui.controllers.DashboardController" prefWidth="600" prefHeight="400">
+    <VBox spacing="20" 
+          alignment="CENTER" 
+          AnchorPane.leftAnchor="0" 
+          AnchorPane.rightAnchor="0" 
+          AnchorPane.topAnchor="0" 
+          AnchorPane.bottomAnchor="0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        <GridPane alignment="CENTER" hgap="20" vgap="20">
+            <Label text="ShopSync Manager Dashboard" style="-fx-font-size: 24px;" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+            
+            <!-- Row 1 -->
+            <Button fx:id="productButton" onAction="#openProductView" prefWidth="150" prefHeight="150" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-text-alignment: center; -fx-background-color: #0984e3; -fx-text-fill: white;"/>
+            <Button fx:id="saleButton" onAction="#openSaleView" prefWidth="150" prefHeight="150" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-text-alignment: center; -fx-background-color: #0984e3; -fx-text-fill: white;"/>
+            <Button fx:id="repairButton" onAction="#openRepairView" prefWidth="150" prefHeight="150" GridPane.columnIndex="2" GridPane.rowIndex="1" style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-text-alignment: center; -fx-background-color: #0984e3; -fx-text-fill: white;"/>
+            
+            <!-- Row 2 -->
+            <Button fx:id="rechargeButton" onAction="#openRechargeView" prefWidth="150" prefHeight="150" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-text-alignment: center; -fx-background-color: #0984e3; -fx-text-fill: white;"/>
+            <Button fx:id="reportButton" onAction="#openReportView" prefWidth="150" prefHeight="150" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-text-alignment: center; -fx-background-color: #0984e3; -fx-text-fill: white;"/>
+            <Button fx:id="developerButton" onAction="#openDeveloperPage" prefWidth="150" prefHeight="150" GridPane.columnIndex="2" GridPane.rowIndex="2" style="-fx-font-size: 16px; -fx-wrap-text: true; -fx-text-alignment: center; -fx-background-color: #e17055; -fx-text-fill: white;"/>
+        </GridPane>
+        <HBox alignment="CENTER">
+            <Button fx:id="settingsButton" onAction="#openSettingsView" prefWidth="150" prefHeight="30" />
+        </HBox>
+    </VBox>
+</AnchorPane>

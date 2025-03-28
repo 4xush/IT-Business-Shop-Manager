@@ -3,7 +3,7 @@ cd /path/to/project
 Desktop/ShopSync Manager
 
 ## To Start the SQLite shell:
-sqlite3 kingcom.db
+sqlite3 shopsync.db
 
 ## View the tables:
 .tables
@@ -19,7 +19,7 @@ SELECT * FROM Sales;
 PRAGMA table_info(Repairs);
 
 ## Remove db
-remove db : -rm /home/ayush/Desktop/ShopSync Manager/kingcom.db
+remove db : -rm /home/ayush/Desktop/ShopSync Manager/shopsync.db
 
 ## drop particular schema
 DROP TABLE IF EXISTS sales;

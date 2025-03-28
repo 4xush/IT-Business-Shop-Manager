@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="gui.controllers.RepairFormController" 
+            prefWidth="800" 
+            prefHeight="600">
+    <VBox spacing="25" 
+          alignment="CENTER" 
+          AnchorPane.leftAnchor="40" 
+          AnchorPane.rightAnchor="40" 
+          AnchorPane.topAnchor="40" 
+          AnchorPane.bottomAnchor="40">
+        <Label text="Repair Details" 
+               style="-fx-font-size: 24px;" 
+               alignment="CENTER"/>
+        <TextField fx:id="customerNameField" 
+                   promptText="Customer Name" 
+                   prefWidth="300"/>
+        <TextField fx:id="phoneNumberField" 
+                   promptText="Phone Number" 
+                   prefWidth="300"/>
+        <TextField fx:id="deviceModelField" 
+                   promptText="Device Model" 
+                   prefWidth="300"/>
+        <TextField fx:id="issueDescriptionField" 
+                   promptText="Issue Description" 
+                   prefWidth="300"/>
+        <TextField fx:id="estimatedCostField" 
+                   promptText="Estimated Cost" 
+                   prefWidth="300"/>
+        <ComboBox fx:id="statusCombo" 
+                  promptText="Select Status" 
+                  prefWidth="300"/>
+        <HBox spacing="20" 
+              alignment="CENTER">
+            <Button fx:id="addButton" 
+                    text="Add" 
+                    onAction="#addRepair" 
+                    prefWidth="100"/>
+            <Button fx:id="updateButton" 
+                    text="Update" 
+                    onAction="#updateRepair" 
+                    prefWidth="100"/>
+            <Button text="Cancel" 
+                    onAction="#cancel" 
+                    prefWidth="100"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

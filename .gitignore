@@ -34,9 +34,3 @@ lib
 *.jar
 *.war
 *.ear
-
-# Maven Project Structure
-src/
-├── main/
-│   ├── java/          # Source code
-│   └── resources/     # Resources (FXML files, database)

@@ -46,7 +46,7 @@ src/
 │   │   └── utils/         # Utility classes
 │   └── resources/
 │       ├── *.fxml         # FXML files for GUI layouts
-│       └── kingcom.db     # SQLite database file
+│       └── shopsync.db     # SQLite database file
 ```
 
 ## Features
@@ -103,7 +103,7 @@ Compile the database connection class:
 javac -d bin -cp "lib/sqlite-jdbc.jar" src/database/DatabaseConnection.java
 
 
-## Run to create tables in kingcom.db
+## Run to create tables in shopsync.db
 
 java -cp "bin:lib/sqlite-jdbc.jar" database.DatabaseConnection
 
@@ -153,7 +153,7 @@ ShopSync Manager empowers shop owners with these practical uses:
         Search and filter records for products, sales, repairs, and recharges.
         View daily reports summarizing sales, repairs, and recharges.
         Manage inventory to monitor stock availability.
-        Export or load the kingcom.db database via Settings for backups and restores.
+        Export or load the shopsync.db database via Settings for backups and restores.
 
 ## Contributing
 
